@@ -20,11 +20,6 @@ public class RestApiHandler extends AbstractRestHandler {
 	@Autowired
 	private SampleService service;
 
-//	@Autowired
-//	RestApiHandler(SampleService service) {
-//		this.service = service;
-//	}
-
 	@Autowired
 	private SampleRepository sampleRepository;
 

@@ -12,11 +12,6 @@ public class MongoDBSampleService implements SampleService {
 	@Autowired
 	private SampleRepository repo; 	
 	
-//	@Autowired	
-//	public MongoDBSampleService(SampleRepository repo) {
-//		this.repo = repo;
-//	}
-
 	@Override
 	public Sample create(Sample sample) {
 		// TODO Auto-generated method stub
