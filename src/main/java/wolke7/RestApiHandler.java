@@ -53,8 +53,11 @@ public class RestApiHandler extends AbstractRestHandler {
 	}
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	public Sample delete(@PathVariable("id") String id) {
-		return service.delete(id);
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable("id") String id) {
+		service.delete(id);
+//		return service.delete(id);
+		return;
 	}
 
 	@ExceptionHandler
