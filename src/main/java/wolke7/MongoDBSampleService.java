@@ -6,6 +6,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * 
+ * @author	Thomas Schoenfeld
+ * @date		2015-02-08
+ *
+ */
 @Service
 public class MongoDBSampleService implements SampleService {
 

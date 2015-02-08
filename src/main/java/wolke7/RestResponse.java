@@ -1,5 +1,11 @@
 package wolke7;
 
+/**
+ * 
+ * @author	Thomas Schoenfeld
+ * @date		2015-02-08
+ *
+ */
 public class RestResponse {
 
 	private String message;

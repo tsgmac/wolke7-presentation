@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 
+ * @author	Thomas Schoenfeld
+ * @date		2015-02-08
+ *
+ */
 @RestController
 @RequestMapping("/samples")
 public class RestApiHandler extends AbstractRestHandler {
