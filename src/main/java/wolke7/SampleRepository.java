@@ -8,20 +8,23 @@ import org.springframework.data.repository.Repository;
 /**
  * 
  * @author	Thomas Schoenfeld
- * @date		2015-02-08
+ * @date		2015-03-28
  *
  */
 public interface SampleRepository extends Repository<Sample, String> {
 
-	Sample save(Sample sample);
-
 	void delete(Sample sample);
+	
+	Sample delete(String id);
 
-	// Sample findById(String id);
-	Sample findBySampleName(String sampleName);
+	Sample findById(String id);
+	
+	Sample findSampleBySampleName(String sampleName);
 
 	Optional<Sample> findOne(String id);
 
 	List<Sample> findAll();
+
 	// Page<Sample> findAll(Pageable pageable);
+	
 }

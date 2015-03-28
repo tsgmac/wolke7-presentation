@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  *       Die Klasse Sample beschreibt eine einzelne Berechnung.
  */
-//@Document(collection = "samples")
+// @Document(collection = "samples")
 @Document(collection = "experiments")
 public class Sample {
 

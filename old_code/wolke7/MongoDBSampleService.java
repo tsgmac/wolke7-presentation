@@ -8,27 +8,28 @@ import org.springframework.stereotype.Service;
 
 /**
  * 
- * @author	Thomas Schoenfeld
- * @date		2015-02-08
+ * @author Thomas Schoenfeld
+ * @param <EntityManager>
+ * @date 2015-03-28
  *
  */
 @Service
-public class MongoDBSampleService implements SampleService {
+public class MongoDBSampleService implements SampleRepository {
 
 	@Autowired
-	private SampleRepository repo; 	
-	
-	@Override
-	public Sample create(Sample sample) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private SampleRepository	repo;
 
 	@Override
 	public Sample delete(String id) {
 		Sample deleted = findSampleById(id);
 		repo.delete(deleted);
 		return deleted;
+	}
+
+	@Override
+	public void delete(Sample sample) {
+		Sample deleted = findSampleById(sample.getId());
+		repo.delete(deleted);
 	}
 
 	@Override
@@ -44,13 +45,19 @@ public class MongoDBSampleService implements SampleService {
 	}
 
 	@Override
-	public Sample update(Sample sample) {
-		// TODO Auto-generated method stub
-		return null;
+	public Sample findSampleBySampleName(String sampleName) {
+		Sample sample = repo.findSampleBySampleName(sampleName);
+		return sample;
 	}
 
 	private Sample findSampleById(String id) {
 		Optional<Sample> result = repo.findOne(id);
 		return result.orElseThrow(() -> new SampleNotFoundException(id));
+	}
+
+	@Override
+	public Optional<Sample> findOne(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
