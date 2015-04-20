@@ -54,7 +54,7 @@ public class RestApiHandler extends AbstractRestHandler {
 //			throw new IllegalArgumentException("This is not a String.");
 
 		List<Sample> samples = new ArrayList<Sample>();
-		for (Sample sample : sampleRepository.findAll()) {
+		for (Sample sample : this.findSampleHeader()) {
 			if (sample.getSampleName().equals(sampleName.trim())) {
 				samples.add(sample);
 			}
@@ -107,7 +107,7 @@ public class RestApiHandler extends AbstractRestHandler {
 //		if (!(sampleName instanceof String))
 //			throw new IllegalArgumentException("This is not a String.");
 
-		for (Sample sample : sampleRepository.findAll()) {
+		for (Sample sample : this.findAll()) {
 			if (sample.getSampleName().equals(sampleName.trim())) {
 				sampleRepository.delete(sample);
 			}

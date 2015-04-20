@@ -24,7 +24,7 @@ public interface SampleRepository extends Repository<Sample, String> {
 	Optional<Sample> findOne(String id);
 
 	List<Sample> findAll();
-
+	
 	// Page<Sample> findAll(Pageable pageable);
 	
 }
