@@ -1,5 +1,6 @@
 package wolke7;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author	Thomas Schoenfeld
- * @date		2015-03-28
+ * @author Thomas Schoenfeld
+ * @date 2015-04-20
  *
  */
 @RestController
@@ -25,37 +26,62 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestApiHandler extends AbstractRestHandler {
 
 	@Autowired
-	private SampleRepository sampleRepository;
+	private SampleRepository	sampleRepository;
 
 	@Autowired
-	private MongoTemplate mongoTemplate;
+	private MongoTemplate			mongoTemplate;
 
+	// Version 1
 	// @RequestMapping(value = "{sampleId}", method = RequestMethod.GET)
 	// public @ResponseBody Sample findSampleById(
 	// @PathVariable("sampleId") String sampleId) {
 	// return sampleRepository.findById(sampleId);
 	// }
 
+	// Version 2
+	// @RequestMapping(value = "{sampleName}", method = RequestMethod.GET)
+	// public @ResponseBody List<Sample> findSampleBySampleName(
+	// @PathVariable("sampleName") String sampleName) {
+	// return sampleRepository.findSampleBySampleName(sampleName);
+	// }
+
+	// Version 3
 	@RequestMapping(value = "{sampleName}", method = RequestMethod.GET)
-	public @ResponseBody Sample findSampleBySampleName(
+	public @ResponseBody List<Sample> findSampleBySampleName(
 			@PathVariable("sampleName") String sampleName) {
-		return sampleRepository.findSampleBySampleName(sampleName);
+
+//		if (!(sampleName instanceof String))
+//			throw new IllegalArgumentException("This is not a String.");
+
+		List<Sample> samples = new ArrayList<Sample>();
+		for (Sample sample : sampleRepository.findAll()) {
+			if (sample.getSampleName().equals(sampleName.trim())) {
+				samples.add(sample);
+			}
+		}
+
+		return samples;
 	}
 
+	// Version 1
+	// @RequestMapping("all")
+	// public @ResponseBody List<Sample> findAll(
+	// @RequestParam(value = "page", required = true) Integer page,
+	// @RequestParam(value = "size", required = true) Integer size) {
+	//
+	// Page<Sample> pageOfSample = sampleRepository.findAll(new PageRequest(page,
+	// size));
+	//
+	// return pageOfSample.getContent();
+	// }
+
+	// Version 2
 	@RequestMapping("all")
-//	public @ResponseBody List<Sample> findAll(
-//			@RequestParam(value = "page", required = true) Integer page,
-//			@RequestParam(value = "size", required = true) Integer size) {
-//
-//		Page<Sample> pageOfSample = sampleRepository.findAll(new PageRequest(page, size));
-//
-//		return pageOfSample.getContent();
-//	}
 	public @ResponseBody List<Sample> findAll() {
 		List<Sample> results = sampleRepository.findAll();
 		return results;
 	}
-	
+
 	@RequestMapping("header")
 	public @ResponseBody List<Sample> findSampleHeader() {
 		Query query = new Query();
@@ -63,13 +89,29 @@ public class RestApiHandler extends AbstractRestHandler {
 		List<Sample> header = mongoTemplate.find(query, Sample.class);
 		return header;
 	}
-	
-	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+
+	// Version 1
+	// @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+	// @ResponseStatus(HttpStatus.NO_CONTENT)
+	// public void delete(@PathVariable("id") String id) {
+	// sampleRepository.delete(id);
+	// // return service.delete(id);
+	// return;
+	// }
+
+	// Version 2
+	@RequestMapping(value = "{sampleName}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") String id) {
-		sampleRepository.delete(id);
-//		return service.delete(id);
-		return;
+	public void delete(@PathVariable("sampleName") String sampleName) {
+
+//		if (!(sampleName instanceof String))
+//			throw new IllegalArgumentException("This is not a String.");
+
+		for (Sample sample : sampleRepository.findAll()) {
+			if (sample.getSampleName().equals(sampleName.trim())) {
+				sampleRepository.delete(sample);
+			}
+		}				
 	}
 
 	@ExceptionHandler
