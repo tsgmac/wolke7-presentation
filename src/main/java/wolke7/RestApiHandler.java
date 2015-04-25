@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 
  * @author Thomas Schoenfeld
- * @date 2015-04-22
+ * @date 2015-04-25
  *
  */
 @RestController
@@ -37,19 +37,6 @@ public class RestApiHandler extends AbstractRestHandler {
 	 * 
 	 * @return all samples with clusters
 	 */
-	// Version 1
-	// @RequestMapping("all")
-	// public @ResponseBody List<Sample> findAll(
-	// @RequestParam(value = "page", required = true) Integer page,
-	// @RequestParam(value = "size", required = true) Integer size) {
-	//
-	// Page<Sample> pageOfSample = sampleRepository.findAll(new PageRequest(page,
-	// size));
-	//
-	// return pageOfSample.getContent();
-	// }
-
-	// Version 2
 	@RequestMapping("all")
 	public @ResponseBody List<Sample> findAll() {
 		List<Sample> results = sampleRepository.findAll();
@@ -77,47 +64,20 @@ public class RestApiHandler extends AbstractRestHandler {
 	 * 
 	 * @return all samples with a given name assigned to their algorithms
 	 */
-	// Version 1
-	// @RequestMapping(value = "{sampleId}", method = RequestMethod.GET)
-	// public @ResponseBody Sample findSampleById(
-	// @PathVariable("sampleId") String sampleId) {
-	// return sampleRepository.findById(sampleId);
-	// }
-
-	// Version 2
-	// @RequestMapping(value = "{sampleName}", method = RequestMethod.GET)
-	// public @ResponseBody List<Sample> findSampleBySampleName(
-	// @PathVariable("sampleName") String sampleName) {
-	// return sampleRepository.findSampleBySampleName(sampleName);
-	// }
-
-	// Version 3
-	// @RequestMapping(value = "{sampleName}", method = RequestMethod.GET)
-	// public @ResponseBody List<Sample> findSampleBySampleName(
-	// @PathVariable("sampleName") String sampleName) {
-	//
-	// // if (!(sampleName instanceof String))
-	// // throw new IllegalArgumentException("This is not a String.");
-	//
-	// List<Sample> samples = new ArrayList<Sample>();
-	// for (Sample sample : this.findSampleHeader()) {
-	// if (sample.getSampleName().equals(sampleName.trim())) {
-	// samples.add(sample);
-	// }
-	// }
-	//
-	// return samples;
-	// }
-
-	// Version 4
 	@RequestMapping(value = "{sampleName}", method = RequestMethod.GET)
 	public @ResponseBody List<Object> findSampleBySampleName(
 			@PathVariable("sampleName") String sampleName) {
 
-		// if (!(sampleName instanceof String))
-		// throw new IllegalArgumentException("This is not a String.");
+		// Should not be necessary if you use the method via web.
+		if (!(sampleName instanceof String)) {
+			throw new IllegalArgumentException(NO_STRING);
+		}
 
 		List<Object> result = new ArrayList<Object>();
+
+		if (!(this.nameExists(sampleName))) {
+			return result;
+		}
 
 		for (String algorithmName : this.algorithms()) {
 
@@ -144,24 +104,20 @@ public class RestApiHandler extends AbstractRestHandler {
 	 * 
 	 * @param sampleName
 	 */
-	// Version 1
-	// @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-	// @ResponseStatus(HttpStatus.NO_CONTENT)
-	// public void delete(@PathVariable("id") String id) {
-	// sampleRepository.delete(id);
-	// // return service.delete(id);
-	// return;
-	// }
-
-	// Version 2
 	@RequestMapping(value = "{sampleName}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("sampleName") String sampleName) {
 
-		// if (!(sampleName instanceof String))
-		// throw new IllegalArgumentException("This is not a String.");
+		// Should not be necessary if you use the method via web.
+		if (!(sampleName instanceof String)) {
+			throw new IllegalArgumentException(NO_STRING);
+		}
 
-		for (Sample sample : this.findAll()) {
+		if (!(this.nameExists(sampleName))) {
+			throw new SampleNotFoundException(sampleName);
+		}
+
+		for (Sample sample : this.findSampleHeader()) {
 			if (sample.getSampleName().equals(sampleName.trim())) {
 				sampleRepository.delete(sample);
 			}
@@ -183,6 +139,31 @@ public class RestApiHandler extends AbstractRestHandler {
 		}
 
 		return algorithmNames;
+	}
+
+	/**
+	 * Checks if a sample with the passed name exists in the database.
+	 * 
+	 * @param sampleName
+	 *          name of the searched sample
+	 * 
+	 * @return true if the sample exists else false
+	 */
+	private boolean nameExists(String sampleName) {
+
+		boolean nameExists = false;
+
+		if (!(sampleName instanceof String)) {
+			throw new IllegalArgumentException(NO_STRING);
+		}
+		
+		for (Sample sample : this.findSampleHeader()) {
+			if (sample.getSampleName().equals(sampleName.trim())) {
+				nameExists = true;
+			}
+		}
+
+		return nameExists;
 	}
 
 	@ExceptionHandler
