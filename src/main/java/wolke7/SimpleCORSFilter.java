@@ -20,7 +20,7 @@ public class SimpleCORSFilter extends OncePerRequestFilter implements Filter {
             throws ServletException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods",
-                "GET, POST, PUT, DELETE, OPTIONS");
+                "GET, POST, PUT, DELETE, OPTIONS, HEAD");
         response.addHeader("Access-Control-Allow-Headers",
                 "origin, content-type, accept, x-requested-with, sid, mycustom, smuser");
             filterChain.doFilter(request, response);

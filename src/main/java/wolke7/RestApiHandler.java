@@ -33,10 +33,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestApiHandler extends AbstractRestHandler {
 
 	@Autowired
-	private SampleRepository			sampleRepository;
+	private SampleRepository	sampleRepository;
 
 	@Autowired
-	private MongoTemplate					mongoTemplate;
+	private MongoTemplate			mongoTemplate;
 
 	/**
 	 * Finds all samples. Complete output including the clusters.
@@ -130,8 +130,11 @@ public class RestApiHandler extends AbstractRestHandler {
 		}
 	}
 
-	@RequestMapping(value = "{input}", method = RequestMethod.POST)
-	public @ResponseBody Response createClusterExperiment(@PathVariable("input") String input)
+//	@RequestMapping(value = "{input}", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
+	public @ResponseBody Response createClusterExperiment(
+			@PathVariable("input") String input)
 			throws URISyntaxException, KeyManagementException,
 			NoSuchAlgorithmException, IOException {
 		return (new ClusterExperimentAPI()).createClusterExperiment(input);
