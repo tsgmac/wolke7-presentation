@@ -8,14 +8,14 @@ import org.springframework.data.repository.Repository;
 /**
  * 
  * @author	Thomas Schoenfeld
- * @date		2015-03-28
+ * @date		2015-04-27
  *
  */
 public interface SampleRepository extends Repository<Sample, String> {
 
 	void delete(Sample sample);
 	
-	Sample delete(String id);
+	Sample delete(String sampleName);
 
 	Sample findById(String id);
 	
@@ -24,7 +24,5 @@ public interface SampleRepository extends Repository<Sample, String> {
 	Optional<Sample> findOne(String id);
 
 	List<Sample> findAll();
-	
-	// Page<Sample> findAll(Pageable pageable);
 	
 }

@@ -8,11 +8,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * 
  * @author Thomas Schoenfeld
- * @date 2015-02-08
+ * @date 2015-04-27
  * 
  *       Die Klasse Sample beschreibt eine einzelne Berechnung.
  */
-// @Document(collection = "samples")
 @Document(collection = "experiments")
 public class Sample {
 

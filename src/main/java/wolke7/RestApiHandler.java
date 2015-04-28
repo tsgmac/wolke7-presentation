@@ -1,8 +1,14 @@
 package wolke7;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+
+import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -27,10 +33,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestApiHandler extends AbstractRestHandler {
 
 	@Autowired
-	private SampleRepository	sampleRepository;
+	private SampleRepository			sampleRepository;
 
 	@Autowired
-	private MongoTemplate			mongoTemplate;
+	private MongoTemplate					mongoTemplate;
 
 	/**
 	 * Finds all samples. Complete output including the clusters.
@@ -124,6 +130,13 @@ public class RestApiHandler extends AbstractRestHandler {
 		}
 	}
 
+	@RequestMapping(value = "{input}", method = RequestMethod.PUT)
+	public @ResponseBody Response createClusterExperiment(@PathVariable("input") String input)
+			throws URISyntaxException, KeyManagementException,
+			NoSuchAlgorithmException, IOException {
+		return (new ClusterExperimentAPI()).createClusterExperiment(input);
+	}
+
 	/**
 	 * Searches for all used algorithms in the database and returns a TreeSet to
 	 * prevent duplicates.
@@ -156,7 +169,7 @@ public class RestApiHandler extends AbstractRestHandler {
 		if (!(sampleName instanceof String)) {
 			throw new IllegalArgumentException(NO_STRING);
 		}
-		
+
 		for (Sample sample : this.findSampleHeader()) {
 			if (sample.getSampleName().equals(sampleName.trim())) {
 				nameExists = true;
