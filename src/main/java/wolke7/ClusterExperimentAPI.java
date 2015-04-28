@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.glassfish.jersey.*;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -39,22 +40,24 @@ public class ClusterExperimentAPI {
     private final static String            VCAP_SERVICES                          = System.getenv("VCAP_SERVICES");
     private              ConnectionFactory factory                                = null;
 
-    @POST
-    @Consumes(APPLICATION_JSON)
+   // @POST
+   // @Consumes(APPLICATION_JSON)
     public Response createClusterExperiment(String input) throws URISyntaxException, KeyManagementException, NoSuchAlgorithmException, IOException {
         try {
             JSONObject jsonObject = new JSONObject(input);
 
-            String startNode = jsonObject.getString(ATTRIBUTE_START_NODE);
+            String startNode = (String) jsonObject.getString(ATTRIBUTE_START_NODE);
             StringEmptyException.checkStringNotEmpty(startNode);
 
-            int fromCount = jsonObject.getInt(ATTRIBUTE_FROM_COUNT);
+            int fromCount = Integer.parseInt(jsonObject.get(ATTRIBUTE_FROM_COUNT).toString());
             NumberNegativeOrZeroException.checkNumberPositive(fromCount);
 
-            int toCount = jsonObject.getInt(ATTRIBUTE_TO_COUNT);
+            int toCount = Integer.parseInt(jsonObject.get(ATTRIBUTE_TO_COUNT).toString());
             NumberNegativeOrZeroException.checkNumberPositive(toCount);
+			
+			
 
-            int stepSize = jsonObject.getInt(ATTRIBUTE_STEP_SIZE);
+            int stepSize = Integer.parseInt(jsonObject.get(ATTRIBUTE_STEP_SIZE).toString());
             NumberNegativeOrZeroException.checkNumberPositive(stepSize);
 
             JSONObject vcap = getVcapVariable();
