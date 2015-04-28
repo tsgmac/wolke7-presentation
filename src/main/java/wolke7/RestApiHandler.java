@@ -130,8 +130,7 @@ public class RestApiHandler extends AbstractRestHandler {
 		}
 	}
 
-//	@RequestMapping(value = "{input}", method = RequestMethod.POST)
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "input", method = RequestMethod.POST)	
 	@ResponseStatus(HttpStatus.CREATED)
 	public @ResponseBody Response createClusterExperiment(
 			@PathVariable("input") String input)
