@@ -23,7 +23,7 @@ import com.rabbitmq.client.ConnectionFactory;
 /**
  * REST API for creating cluster experiment resources.
  */
-@Path("cluster-experiments")
+//@Path("cluster-experiments")
 public class ClusterExperimentAPI {
     private static final String            ATTRIBUTE_ALGORITHM                    = "algorithm";
     private static final String            ATTRIBUTE_START_NODE                   = "startNode";
