@@ -130,7 +130,7 @@ public class RestApiHandler extends AbstractRestHandler {
 		}
 	}
 
-	@RequestMapping(value = "{input}", method = RequestMethod.PUT)
+	@RequestMapping(value = "{input}", method = RequestMethod.POST)
 	public @ResponseBody Response createClusterExperiment(@PathVariable("input") String input)
 			throws URISyntaxException, KeyManagementException,
 			NoSuchAlgorithmException, IOException {
